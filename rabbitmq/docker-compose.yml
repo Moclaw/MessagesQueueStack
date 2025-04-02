@@ -1,0 +1,25 @@
+version: "3"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"   # AMQP port
+      - "15672:15672" # Management UI port
+    env_file:
+      - .env
+    environment:
+      RABBITMQ_DEFAULT_USER: ${USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${PASSWORD}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - rabbitmq-net
+    restart: unless-stopped
+
+volumes:
+  rabbitmq-data:
+    driver: local
+
+networks:
+  rabbitmq-net:
